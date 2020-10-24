@@ -1,0 +1,71 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+10	Resources\Textures\Enemy\enemies.png	3	26	100
+# id	left	top	width	height	texture_id
+[SPRITES]
+
+#GOOMBA
+30001	5	14	16	16	10
+30002	25	14	16	16	10
+#die
+30003	45	21	16	9	10
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+# ==== GOOMBA  =========
+# walk
+701	30001	100	30002	100
+# die
+702	30003	100
+
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# GOOMBA
+3	701	702
+
+[OBJECTS]
+# type	x	y	ani_set_id	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+
+# KOOPAS
+#3	20	24	4
+# GOOMBA
+#2	200	135	3
+#2	260	135	3
+#2	320	135	3
+#2	480	135	3
+#2	500	135	3
+
+# BRICK 
+# --- platform (hint: I created the list using Excel!) ----
+1	0	272	21	16	160
+1	16	416	22	608	16
+1	240	368	23	48	16
+1	272	336	24	48	16
+1	352	368	25	32	48
+1	400	368	24	80	16
+1	464	336	24	64	16
+1	512	384	24	96	16
+1	512	304	24	64	16
+1	624	400	22	464	16
+1	1152	416	22	352	16
+1	1536	416	22	80	16
+1	1664	416	22	576	16
+1	2256	416	22	576	16
+1	1264	384	22	112	16
+1	1296	352	22	112	16
+1	1328	320	22	112	16
+1	1792	384	22	32	32
+1	1856	368	22	32	48
+1	2144	368	22	48	16
+1	2176	272	22	48	16
+1	1312	144	22	64	16
+1	1408	192	22	64	16
+1	1488	176	22	208	16
+#Gate
+#2	700	400	1	200	300	0	1
+
+[TILEMAP]
+#tile id	file_texture	file_path	num row on tex	num col on tex	num row on tilemap	num col tilemap	tile size
+1000	Resources\TileMap\1.png	Resources\TileMap\1.txt	27	176	27	176	16	16
