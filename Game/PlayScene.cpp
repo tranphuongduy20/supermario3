@@ -4,6 +4,12 @@
 #define OBJECT_TYPE_MARIO		0
 #define OBJECT_TYPE_BRICK		1
 #define OBJECT_TYPE_GATE		2
+#define OBJECT_TYPE_KOOPA		3
+#define OBJECT_TYPE_CBRICK		4
+#define OBJECT_TYPE_MUSHROOM	5
+#define OBJECT_TYPE_LEAF		6
+#define OBJECT_TYPE_COIN		10
+#define OBJECT_TYPE_GOOMBA		11
 //#define OBJECT_TYPE_CENTIPEDE	10
 //#define OBJECT_TYPE_GOLEM		11
 //#define OBJECT_TYPE_GUNNER		12
@@ -117,6 +123,7 @@ void PlayScene::Update(DWORD dt)
 	if (listItems.size() > 0)
 		PlayerCollideItem();
 	PlayerGotGate();
+	PlayerTouchItem();
 #pragma region Objects Updates
 	vector<LPGAMEENTITY> coObjects;
 	for (int i = 0; i < listObjects.size(); i++)
@@ -155,6 +162,20 @@ bool PlayScene::PlayerPassingStage(float DistanceXWant, int directionGo)
 			}
 		}
 	return true;
+}
+
+void PlayScene::PlayerTouchItem()
+{
+	for (UINT i = 0; i < listObjects.size(); i++)
+	{ 
+		if (listObjects[i]->GetType() == EntityType::MUSH)
+		{
+			if (player->IsCollidingObject(listObjects[i]))
+			{
+				listObjects[i]->SetState(MUSHROOM_STATE_WALKING);
+			}
+		}
+	}
 }
 
 void PlayScene::PlayerGotGate()
@@ -327,6 +348,7 @@ void PlayScenceKeyHandler::KeyState(BYTE* states)
 	if (Game::GetInstance()->IsKeyDown(DIK_RIGHT) && !player->isWalkingComplete)
 	{
 		player->SetState(MARIO_STATE_WALKING_RIGHT);
+		//player->isKick = false;
 		if (Game::GetInstance()->IsKeyDown(DIK_A))
 		{
 			player->isRun = true;
@@ -335,6 +357,7 @@ void PlayScenceKeyHandler::KeyState(BYTE* states)
 	else if (Game::GetInstance()->IsKeyDown(DIK_LEFT) && !player->isWalkingComplete)
 	{
 		player->SetState(MARIO_STATE_WALKING_LEFT);
+		//player->isKick = false;
 		if (Game::GetInstance()->IsKeyDown(DIK_A))
 		{
 			player->isRun = true;
@@ -585,11 +608,74 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	{
 		obj = new Brick(atof(tokens[4].c_str()),atof(tokens[5].c_str()));
 		obj->SetPosition(x, y);
-		//LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		
-		//obj->SetAnimationSet(ani_set);
 		listObjects.push_back(obj);
 		DebugOut(L"[test] add brick !\n");
+		break;
+	}
+	case OBJECT_TYPE_CBRICK:
+	{
+		obj = new CBrick(x,y,atof(tokens[4].c_str()), atof(tokens[5].c_str()));
+		//obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		
+		obj->SetAnimationSet(ani_set);
+		listObjects.push_back(obj);
+		DebugOut(L"[test] add cbrick !\n");
+		break;
+	}
+	case OBJECT_TYPE_KOOPA:
+	{
+		obj = new Koopa(/*atof(tokens[4].c_str()), atof(tokens[5].c_str())*/);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+
+		obj->SetAnimationSet(ani_set);
+		listObjects.push_back(obj);
+		DebugOut(L"[test] add koopa !\n");
+		break;
+	}
+	case OBJECT_TYPE_GOOMBA:
+	{
+		obj = new Goomba();
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+
+		obj->SetAnimationSet(ani_set);
+		listObjects.push_back(obj);
+		DebugOut(L"[test] add goomba !\n");
+		break;
+	}
+	case OBJECT_TYPE_MUSHROOM:
+	{
+		obj = new Mushroom(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+
+		obj->SetAnimationSet(ani_set);
+		listObjects.push_back(obj);
+		DebugOut(L"[test] add mushroom !\n");
+		break;
+	}
+	case OBJECT_TYPE_LEAF:
+	{
+		obj = new Leaf();
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+
+		obj->SetAnimationSet(ani_set);
+		listObjects.push_back(obj);
+		DebugOut(L"[test] add leaf !\n");
+		break;
+	}
+	case OBJECT_TYPE_COIN:
+	{
+		obj = new Coin(atof(tokens[4].c_str()), atof(tokens[5].c_str()));
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+
+		obj->SetAnimationSet(ani_set);
+		listObjects.push_back(obj);
+		DebugOut(L"[test] add coin !\n");
 		break;
 	}
 	case OBJECT_TYPE_GATE:

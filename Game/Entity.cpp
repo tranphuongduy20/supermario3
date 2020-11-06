@@ -164,7 +164,7 @@ void Entity::RenderBoundingBox()
 	rect.right = (int)r - (int)l;
 	rect.bottom = (int)b - (int)t;
 
-	Game::GetInstance()->OldDraw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, bbARGB);
+	Game::GetInstance()->OldDraw(l, t, bbox, rect.left, rect.top, rect.right, rect.bottom, bbARGB);
 }
 
 

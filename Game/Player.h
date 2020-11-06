@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include <map>
 #include "Timer.h"
+#include "CBrick.h"
 
 #define MARIO_WALKING_SPEED		0.08f 
 #define	MARIO_VMAX				0.15f
@@ -11,7 +12,7 @@
 
 #define MARIO_JUMP_SPEED_Y		0.2f
 #define MARIO_JUMP_SPEED_YMAX	0.2f
-#define MARIO_JUMP_Y			0.015f
+#define MARIO_JUMP_Y			0.02f
 #define MARIO_JUMP_DEFLECT_SPEED 0.2f
 #define MARIO_GRAVITY			0.0003f
 #define MARIO_DIE_DEFLECT_SPEED	 0.2f
@@ -33,6 +34,7 @@
 #define MARIO_STATE_RUN				900
 #define MARIO_STATE_SPIN			1000
 #define MARIO_STATE_FLY				1100
+#define MARIO_STATE_KICK			1200
 
 #define MARIO_ANI_BIG_IDLE				0
 #define MARIO_ANI_BIG_WALKING			1
@@ -69,6 +71,14 @@
 #define MARIO_ANI_RACCOON_FLY_SHEET		32
 #define MARIO_ANI_BIG_JUMP_DOWN			33
 #define MARIO_ANI_FIRE_JUMP_DOWN		34
+#define MARIO_ANI_SMALL_KICK			35
+#define MARIO_ANI_BIG_KICK				36
+#define MARIO_ANI_RACCOON_KICK			37
+#define MARIO_ANI_FIRE_KICK				38
+#define MARIO_ANI_SMALL_IDLE_HOLD		39
+#define MARIO_ANI_SMALL_HOLD			40
+
+
 
 
 
@@ -124,6 +134,8 @@ public:
 	bool isFly;
 	bool isAttack;
 	bool isDie;
+	bool isKick;
+	Entity* holdthing;
 
 	int walkingDirection;
 	bool isWaittingPressBtn;

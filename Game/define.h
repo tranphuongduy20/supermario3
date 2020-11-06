@@ -65,7 +65,7 @@
 #define ANIMATION_SET_GATE					26
 
 #define BOT_CAM						250//cam o bot
-#define BONUS_CAM					30 //lam cam muot
+#define BONUS_CAM					80 //lam cam muot
 
 //Nen define thanh nhieu lop type
 //Vd Zombie thuoc EntityType, EnemyType
@@ -101,7 +101,12 @@ enum EntityType
 	UIEXTRASHOT = 13,
 
 	//Static Obj Zone 20-40
+	COIN = 28,
 	BRICK = 20,
+	MUSH = 29,
+	GOOMBA = 31,
+	KOOPA = 32,
+	CBRICK = 30,
 	BREAKABLEBRICK = 21,
 	TORCH = 22,
 	CANDLE = 23,

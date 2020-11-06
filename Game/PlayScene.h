@@ -12,6 +12,12 @@
 #include "Player.h"
 //#include "HUD.h"
 #include "Brick.h"
+#include "CBrick.h"
+#include "Koopa.h"
+#include "Goomba.h"
+#include "Mushroom.h"
+#include "Leaf.h"
+#include "Coin.h"
 #include "Gate.h"
 //#include "PowerUp.h"
 //#include "GunUp.h"
@@ -76,6 +82,7 @@ public:
 	void ChooseMap(int whatStage);
 	bool PlayerPassingStage(float DistanceXWant, int directionGo);
 	void PlayerGotGate();
+	void PlayerTouchItem();
 	void PlayerCollideItem();
 	virtual void LoadSceneObjects();
 	virtual void Update(DWORD dt);

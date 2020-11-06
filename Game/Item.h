@@ -16,6 +16,7 @@ protected:
 	Timer* delayTimer;
 	DWORD delayStart;
 	DWORD delayLimit;
+
 public:
 	Item();
 	~Item();

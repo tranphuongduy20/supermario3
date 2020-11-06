@@ -1,4 +1,4 @@
-#pragma once
+	#pragma once
 
 #include <Windows.h>
 #include <d3dx9.h>
@@ -39,6 +39,8 @@ struct CCollisionEvent
 		return a->t < b->t;
 	}
 };
+
+
 
 
 class Entity
@@ -106,9 +108,9 @@ public:
 
 	Entity();
 	virtual bool IsCollidingObject(Entity* Obj);
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {};
 	virtual void Update(DWORD dt, vector<LPGAMEENTITY>* coObjects = NULL);
-	virtual void Render() = 0;
+	virtual void Render() {};
 	virtual void SetState(int state) { this->state = state; }
 
 
