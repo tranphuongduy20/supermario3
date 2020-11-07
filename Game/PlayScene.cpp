@@ -8,6 +8,7 @@
 #define OBJECT_TYPE_CBRICK		4
 #define OBJECT_TYPE_MUSHROOM	5
 #define OBJECT_TYPE_LEAF		6
+#define	OBJECT_TYPE_VENUS_RED	7
 #define OBJECT_TYPE_COIN		10
 #define OBJECT_TYPE_GOOMBA		11
 //#define OBJECT_TYPE_CENTIPEDE	10
@@ -91,7 +92,9 @@ void PlayScene::Update(DWORD dt)
 	Game* game = Game::GetInstance();
 	float cx, cy;
 	player->GetPosition(cx, cy);
-	if (player->Getx() + SCREEN_WIDTH / 2  >= mapWidth)
+	cx -= SCREEN_WIDTH / 2;
+	cy -= SCREEN_HEIGHT / 2;
+	/*if (player->Getx() + SCREEN_WIDTH / 2  >= mapWidth)
 	{
 		cx -= mapWidth - SCREEN_WIDTH / 2;
 	}
@@ -101,7 +104,7 @@ void PlayScene::Update(DWORD dt)
 			cx = 0;
 		else
 			cx -= SCREEN_WIDTH / 2;
-	}
+	}*/
 	if (player->Gety() < ((SCREEN_HEIGHT / 4) - BONUS_CAM/2))
 		cy = 0;
 	else if (player->Gety() <= (((float)mapHeight / 2) - BONUS_CAM))
@@ -109,14 +112,14 @@ void PlayScene::Update(DWORD dt)
 	else if (player->Gety() > (((float)mapHeight / 2) - BONUS_CAM))
 		cy = BOT_CAM;
 
-	/*if (cx < 0)
+	if (cx < 0)
 	{
 		cx = 0;
 	}
 	else if (cx + SCREEN_WIDTH >= tilemap->GetWidthTileMap())
 	{
-		cx = tilemap->GetWidthTileMap(); SCREEN_WIDTH;
-	}*/
+		cx = tilemap->GetWidthTileMap() - SCREEN_WIDTH;
+	}
 
 	game->SetCamPos(cx, cy);
 #pragma endregion
@@ -126,6 +129,7 @@ void PlayScene::Update(DWORD dt)
 	PlayerTouchItem();
 #pragma region Objects Updates
 	vector<LPGAMEENTITY> coObjects;
+	vector<LPGAMEENTITY> coObjects2;
 	for (int i = 0; i < listObjects.size(); i++)
 		coObjects.push_back(listObjects[i]);
 	player->Update(dt, &coObjects);
@@ -133,7 +137,14 @@ void PlayScene::Update(DWORD dt)
 	for (int i = 0; i < listBullets.size(); i++)
 		listBullets[i]->Update(dt, &coObjects);
 	for (int i = 0; i < listObjects.size(); i++)
-		listObjects[i]->Update(dt, &coObjects);	
+	{
+		if (dynamic_cast<Brick*>(listObjects[i]))
+		{ }
+		else
+			listObjects[i]->Update(dt, &coObjects);
+	}
+	for (int i = 0; i < listLeaf.size(); i++)
+		listLeaf[i]->Update(dt, &coObjects2);
 	for (int i = 0; i < listItems.size(); i++)
 		listItems[i]->Update(dt, &listObjects);
 #pragma endregion
@@ -173,6 +184,13 @@ void PlayScene::PlayerTouchItem()
 			if (player->IsCollidingObject(listObjects[i]))
 			{
 				listObjects[i]->SetState(MUSHROOM_STATE_WALKING);
+			}
+		}
+		if (listObjects[i]->GetType() == EntityType::LEAF)
+		{
+			if (player->IsCollidingObject(listObjects[i]))
+			{
+				listObjects[i]->SetState(LEAF_STATE_WALKING);
 			}
 		}
 	}
@@ -326,6 +344,10 @@ void PlayScenceKeyHandler::OnKeyUp(int KeyCode)
 		player->isCrouch = false;
 		break;
 	case DIK_A:
+		if (player->holdthing)
+		{
+			player->holdthing->SetState(KOOPA_STATE_TROOPA_SPIN);
+		}
 		player->isRun = false;
 		break;
 	}
@@ -635,6 +657,17 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[test] add koopa !\n");
 		break;
 	}
+	case OBJECT_TYPE_VENUS_RED:
+	{
+		obj = new Venus(/*atof(tokens[4].c_str()), atof(tokens[5].c_str())*/);
+		obj->SetPosition(x, y);
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+
+		obj->SetAnimationSet(ani_set);
+		listObjects.push_back(obj);
+		DebugOut(L"[test] add venus !\n");
+		break;
+	}
 	case OBJECT_TYPE_GOOMBA:
 	{
 		obj = new Goomba();
@@ -658,11 +691,11 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_LEAF:
 	{
-		obj = new Leaf();
-		obj->SetPosition(x, y);
+		obj = new Leaf(x, y);
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
 		obj->SetAnimationSet(ani_set);
+		listLeaf.push_back(obj);
 		listObjects.push_back(obj);
 		DebugOut(L"[test] add leaf !\n");
 		break;
@@ -867,6 +900,8 @@ void PlayScene::Render()
 		listObjects[i]->Render();
 	for (int i = 0; i < listItems.size(); i++)
 		listItems[i]->Render();
+	for (int i = 0; i < listLeaf.size(); i++)
+		listLeaf[i]->Render();
 	player->Render();
 	//supBullet->Render();
 	for (int i = 0; i < listBullets.size(); i++)

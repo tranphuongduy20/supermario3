@@ -109,6 +109,9 @@
     <ClCompile Include="Leaf.cpp">
       <Filter>Header Files\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Venus.cpp">
+      <Filter>Header Files\Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -218,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="Leaf.h">
       <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Venus.h">
+      <Filter>Header Files\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

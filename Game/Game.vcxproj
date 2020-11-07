@@ -159,6 +159,7 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Venus.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Venus.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

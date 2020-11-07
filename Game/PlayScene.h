@@ -16,6 +16,7 @@
 #include "Koopa.h"
 #include "Goomba.h"
 #include "Mushroom.h"
+#include "Venus.h"
 #include "Leaf.h"
 #include "Coin.h"
 #include "Gate.h"
@@ -54,6 +55,7 @@ protected:
 	vector<LPBULLET> listBullets;
 	vector<LPCWSTR> listSceneFilePath;
 	vector<LPGAMEITEM> listItems;
+	vector<LPGAMEENTITY> listLeaf;
 
 	int idStage;
 	int mapWidth, mapHeight;

@@ -98,6 +98,8 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 		isWaitingForAni = false;
 	}
 
+	
+
 	//turn off collision when die 
 	if (state != MARIO_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
@@ -260,8 +262,15 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 							//isKick = true;
 							//SetState(MARIO_STATE_KICK);
 							e->obj->nx = nx;
-							//e->obj->SetState(KOOPA_STATE_TROOPA_SPIN);
-							holdthing = e->obj;
+							if (!Game::GetInstance()->IsKeyDown(DIK_A))
+							{
+								holdthing = nullptr;
+								e->obj->SetState(KOOPA_STATE_TROOPA_SPIN);
+							}
+							else
+							{
+								holdthing = e->obj;
+							}
 						}
 					}
 					else
@@ -336,11 +345,16 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 
 	float k, l;
 	GetPosition(k, l);
-
-	if (holdthing)
+	if (!Game::GetInstance()->IsKeyDown(DIK_A))
 	{
-		holdthing->SetPosition(nx == 1?k + nx * 10: k + nx * 13, l - 10);
+		holdthing = nullptr;
 	}
+	if (holdthing && Game::GetInstance()->IsKeyDown(DIK_A))
+	{
+		holdthing->SetPosition(nx == 1?k + nx * 10: k + nx * 13, /*holdthing->Gety*/ l - 20);
+	}
+
+
 #pragma endregion
 }
 
@@ -350,7 +364,7 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 //		return;
 //	health -= dame;
 //	gunDam -= dame;
-//
+//G
 //	StartUntouchable();
 //	immortalTimer->Start();
 //	isImmortaling = true;
@@ -367,7 +381,8 @@ void Player::Render()
 		if (isCrouch == true) {
 			ani = MARIO_ANI_BIG_CROUCH;
 		}
-		else if (isWalkingComplete == true) {
+		else if (isWalkingComplete == true && vy == 0) 
+{
 			ani = MARIO_ANI_BIG_SKID;
 		}
 		else
@@ -427,7 +442,7 @@ void Player::Render()
 			ani = MARIO_ANI_RACCOON_CROUCH;
 		else if (isSpin)
 			ani = MARIO_ANI_RACCOON_SPIN;
-		else if (isWalkingComplete)
+		else if (isWalkingComplete && vy == 0)
 			ani = MARIO_ANI_RACCOON_SKID;
 		else
 		{
@@ -470,7 +485,7 @@ void Player::Render()
 		if (isCrouch == true) {
 			ani = MARIO_ANI_FIRE_CROUCH;
 		}
-		else if (isWalkingComplete == true) {
+		else if (isWalkingComplete == true && vy == 0) {
 			ani = MARIO_ANI_FIRE_SKID;
 		}
 		else
@@ -501,7 +516,7 @@ void Player::Render()
 	if (animationSet->at(MARIO_ANI_RACCOON_SPIN_SINGLE)->GetCurrentFrame() == 3)
 		isAttack = false;
 	//DebugOut(L"[vx] %f \n", vx);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void Player::SetState(int state)
@@ -605,26 +620,31 @@ void Player::SetState(int state)
 
 void Player::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
-	top = y;
-
 	if (level == MARIO_LEVEL_BIG)
 	{
+		left = x;
+		top = y;
 		right = x + MARIO_BIG_BBOX_WIDTH;
 		bottom = y + MARIO_BIG_BBOX_HEIGHT;
 	}
 	else if (level == MARIO_LEVEL_SMALL)
 	{
+		left = x;
+		top = y;
 		right = x + MARIO_SMALL_BBOX_WIDTH;
 		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
 	}
 	else if (level == MARIO_LEVEL_RACCOON)
 	{
-		right = x + MARIO_RACCOON_BBOX_WIDTH;
+		left = x;
+		top = y;
+		right = x + MARIO_RACCOON_BBOX_WIDTH -3;
 		bottom = y + MARIO_RACCOON_BBOX_HEIGHT;
 	}
 	else if (level == MARIO_LEVEL_FIRE)
 	{
+		left = x;
+		top = y;
 		right = x + MARIO_FIRE_BBOX_WIDTH;
 		bottom = y + MARIO_FIRE_BBOX_HEIGHT;
 	}
