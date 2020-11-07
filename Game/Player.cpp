@@ -230,7 +230,7 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 				y += min_ty * dy + ny * 0.001f;*/
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
-				if (e->ny != 0)
+				/*if (e->ny != 0)
 				{
 					if (e->ny == -1)
 					{
@@ -241,21 +241,103 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 							vy = -MARIO_JUMP_DEFLECT_SPEED;
 						}
 					}
-				}
+				}*/
+				if (e->ny < 0)
+				{
+					if (koopa->GetState() == KOOPA_STATE_WALKING)
+					{
+						koopa->SetState(KOOPA_STATE_DIE);
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+						isJumping = true;
+					}
+					else if (koopa->GetState() == KOOPA_STATE_TROOPA_SPIN)
+					{
+						koopa->SetState(KOOPA_STATE_DIE);
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+						isJumping = true;
+					}
+					else if (koopa->GetState() == KOOPA_STATE_DIE)
+					{
+						//DebugOut(L"nx cua mario %d \n ", lastnx);
+						koopa->SetState(KOOPA_STATE_TROOPA_SPIN);
+						if (lastnx > 0)
+						{
+							koopa->nx = 1;
+						}
+						else
+							koopa->nx = -1;
+						y += dy;
 
+					}
+				}
+				//else if (koopa->GetState() == KOOPA_STATE_DIE)
+				//{
+				//	/*if (e->nx > 0)
+				//	{*/
+				//		if (level == MARIO_LEVEL_SMALL)
+				//			SetState(MARIO_ANI_SMALL_KICK);
+				//		else if (level == MARIO_LEVEL_BIG)
+				//			SetState(MARIO_ANI_BIG_KICK);
+				//		else if (level == MARIO_LEVEL_RACCOON)
+				//			SetState(MARIO_ANI_RACCOON_KICK);
+				//		else if (level == MARIO_LEVEL_FIRE)
+				//			SetState(MARIO_ANI_FIRE_KICK);
+				//		koopa->SetState(KOOPA_STATE_TROOPA_SPIN);
+				//		koopa->nx = -1;
+				//}
 				else if (e->nx != 0)
 				{
-					if (untouchable == 0)
+					if (GetState() == MARIO_ANI_RACCOON_SPIN)
 					{
 						if (koopa->GetState() != KOOPA_STATE_DIE)
 						{
-							if (level > MARIO_LEVEL_SMALL)
+							koopa->SetState(KOOPA_STATE_DIE);
+						}
+					}
+					else if (untouchable == 0)
+					{
+						//if (koopa->GetState() != KOOPA_STATE_DIE)
+						//{
+						//	if (level > MARIO_LEVEL_SMALL)
+						//	{
+						//		level = MARIO_LEVEL_SMALL;
+						//		StartUntouchable();
+						//	}
+						//	else
+						//		SetState(MARIO_STATE_DIE);
+						//}
+						//else
+						//{
+						//	//isKick = true;
+						//	//SetState(MARIO_STATE_KICK);
+						//	e->obj->nx = nx;
+						//	if (!Game::GetInstance()->IsKeyDown(DIK_A))
+						//	{
+						//		holdthing = nullptr;
+						//		e->obj->SetState(KOOPA_STATE_TROOPA_SPIN);
+						//	}
+						//	else
+						//	{
+						//		holdthing = e->obj;
+						//	}
+						//}
+						if (koopa->GetState() != KOOPA_STATE_DIE)
+						{
+							if (level > MARIO_LEVEL_BIG)
+							{
+								level = MARIO_LEVEL_BIG;
+								StartUntouchable();
+							}
+							else if (level == MARIO_LEVEL_BIG)
 							{
 								level = MARIO_LEVEL_SMALL;
 								StartUntouchable();
 							}
 							else
+							{
 								SetState(MARIO_STATE_DIE);
+								return;
+							}
 						}
 						else
 						{
