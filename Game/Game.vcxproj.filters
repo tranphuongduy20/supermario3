@@ -4,9 +4,6 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Header Files\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="MainJasonBullet.cpp">
-      <Filter>Header Files\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="Animations.cpp">
       <Filter>Header Files\Framework\Render</Filter>
     </ClCompile>
@@ -112,12 +109,12 @@
     <ClCompile Include="Venus.cpp">
       <Filter>Header Files\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="MarioBullet.cpp">
+      <Filter>Header Files\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
-      <Filter>Header Files\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="MainJasonBullet.h">
       <Filter>Header Files\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="define.h">
@@ -224,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="Venus.h">
       <Filter>Header Files\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioBullet.h">
+      <Filter>Header Files\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

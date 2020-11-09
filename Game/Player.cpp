@@ -258,8 +258,8 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 					}
 					else if (koopa->GetState() == KOOPA_STATE_DIE)
 					{
-						//DebugOut(L"nx cua mario %d \n ", lastnx);
 						koopa->SetState(KOOPA_STATE_TROOPA_SPIN);
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
 						if (lastnx > 0)
 						{
 							koopa->nx = 1;
@@ -341,8 +341,7 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 						}
 						else
 						{
-							//isKick = true;
-							//SetState(MARIO_STATE_KICK);
+							isKick = true;
 							e->obj->nx = nx;
 							if (!Game::GetInstance()->IsKeyDown(DIK_A))
 							{
@@ -433,12 +432,49 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 	}
 	if (holdthing && Game::GetInstance()->IsKeyDown(DIK_A))
 	{
-		holdthing->SetPosition(nx == 1?k + nx * 10: k + nx * 13, /*holdthing->Gety*/ l - 20);
+		if (level == MARIO_LEVEL_SMALL)
+			holdthing->SetPosition(nx == 1 ? k + nx * 10 : k + nx * 13, /*holdthing->Gety*/ l - 15);
+		else if (level == MARIO_LEVEL_RACCOON)
+			holdthing->SetPosition(nx == 1 ? k + nx * 17 : k + nx * 13, /*holdthing->Gety*/ l - 5);
+		else
+			holdthing->SetPosition(nx == 1 ? k + nx * 10 : k + nx * 13, /*holdthing->Gety*/ l - 5);
 	}
 
 
 #pragma endregion
 }
+
+//void Player::Collision_items(vector<LPGAMEENTITY>* coObjects)
+//{
+//	float l, t, r, b, ln, tn, rn, btn;
+//	GetBoundingBox(l, t, r, b);
+//	for (UINT i = 0; i < coObjects->size(); i++)
+//	{
+//		LPGAMEENTITY e = coObjects->at(i);
+//		e->GetBoundingBox(ln, tn, rn, btn);
+//		if (Entity::CheckAABB(l, t, r, b, ln, tn, rn, btn))
+//		{
+//
+//			if (e->GetType() == EntityType::MUSH)
+//			{
+//				e->isdone = true;
+//				y -= 20;
+//				level = MARIO_LEVEL_BIG;
+//			}
+//			else if (e->GetType() == EntityType::LEAF)
+//			{
+//				y -= 5;
+//				e->isdone = true;
+//				level = MARIO_LEVEL_RACCOON;
+//			}
+//			/*else if (e->id_items == FIRE_FLOWER)
+//			{
+//				e->isdone = true;
+//				level = MARIO_FIRE;
+//			}*/
+//		}
+//	}
+//}
 
 //void Player::SetInjured(int dame)
 //{
@@ -460,12 +496,22 @@ void Player::Render()
 	}
 	else if (level == MARIO_LEVEL_BIG)
 	{
-		if (isCrouch == true) {
+		if (holdthing)
+		{
+			if (vx == 0)
+				ani = MARIO_ANI_BIG_IDLE_HOLD;
+			else
+				ani = MARIO_ANI_BIG_HOLD;
+		}
+		else if (isCrouch == true) {
 			ani = MARIO_ANI_BIG_CROUCH;
 		}
-		else if (isWalkingComplete == true && vy == 0) 
-{
+		else if (isWalkingComplete == true && vy == 0)
+		{
 			ani = MARIO_ANI_BIG_SKID;
+		}
+		else if (isKick == true) {
+			ani = MARIO_ANI_BIG_KICK;
 		}
 		else
 		{
@@ -491,7 +537,14 @@ void Player::Render()
 	}
 	else if (level == MARIO_LEVEL_SMALL)
 	{
-		if (isWalkingComplete == true && vy ==0) {
+		if (holdthing)
+		{
+			if (vx == 0)
+				ani = MARIO_ANI_SMALL_IDLE_HOLD;
+			else
+				ani = MARIO_ANI_SMALL_HOLD;
+		}
+		else if (isWalkingComplete == true && vy == 0) {
 			ani = MARIO_ANI_SMALL_SKID;
 		}
 		else if (isKick == true) {
@@ -520,12 +573,22 @@ void Player::Render()
 		{
 			ani = MARIO_ANI_RACCOON_FLY;
 		}
+		else if (holdthing)
+		{
+			if (vx == 0)
+				ani = MARIO_ANI_RACCOON_IDLE_HOLD;
+			else
+				ani = MARIO_ANI_RACCOON_HOLD;
+		}
 		else if (isCrouch)
 			ani = MARIO_ANI_RACCOON_CROUCH;
 		else if (isSpin)
 			ani = MARIO_ANI_RACCOON_SPIN;
 		else if (isWalkingComplete && vy == 0)
 			ani = MARIO_ANI_RACCOON_SKID;
+		else if (isKick == true) {
+			ani = MARIO_ANI_RACCOON_KICK;
+		}
 		else
 		{
 			if (isJumping == false)
@@ -564,11 +627,21 @@ void Player::Render()
 	}
 	else if (level == MARIO_LEVEL_FIRE)
 	{
-		if (isCrouch == true) {
+		if (holdthing)
+		{
+			if (vx == 0)
+				ani = MARIO_ANI_FIRE_IDLE_HOLD;
+			else
+				ani = MARIO_ANI_FIRE_HOLD;
+		}
+		else if (isCrouch == true) {
 			ani = MARIO_ANI_FIRE_CROUCH;
 		}
 		else if (isWalkingComplete == true && vy == 0) {
 			ani = MARIO_ANI_FIRE_SKID;
+		}
+		else if (isKick == true) {
+			ani = MARIO_ANI_FIRE_KICK;
 		}
 		else
 		{
@@ -597,6 +670,15 @@ void Player::Render()
 	animationSet->at(ani)->Render(nx, x, y, alpha);
 	if (animationSet->at(MARIO_ANI_RACCOON_SPIN_SINGLE)->GetCurrentFrame() == 3)
 		isAttack = false;
+
+	if (animationSet->at(MARIO_ANI_SMALL_KICK)->GetCurrentFrame() == 2)
+		isKick = false;
+	if (animationSet->at(MARIO_ANI_BIG_KICK)->GetCurrentFrame() == 2)
+		isKick = false;
+	if (animationSet->at(MARIO_ANI_RACCOON_KICK)->GetCurrentFrame() == 2)
+		isKick = false;
+	if (animationSet->at(MARIO_ANI_FIRE_KICK)->GetCurrentFrame() == 2)
+		isKick = false;
 	//DebugOut(L"[vx] %f \n", vx);
 	RenderBoundingBox();
 }
@@ -720,7 +802,7 @@ void Player::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	{
 		left = x;
 		top = y;
-		right = x + MARIO_RACCOON_BBOX_WIDTH -3;
+		right = x + MARIO_RACCOON_BBOX_WIDTH;
 		bottom = y + MARIO_RACCOON_BBOX_HEIGHT;
 	}
 	else if (level == MARIO_LEVEL_FIRE)

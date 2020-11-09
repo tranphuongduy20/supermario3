@@ -1,6 +1,6 @@
-﻿#include "MainJasonBullet.h"
+﻿#include "MarioBullet.h"
 
-MainJasonBullet::MainJasonBullet()
+MarioBullet::MarioBullet()
 {
 	this->SetAnimationSet(CAnimationSets::GetInstance()->Get(ANIMATION_SET_BULLET));
 	x = 0;
@@ -13,9 +13,9 @@ MainJasonBullet::MainJasonBullet()
 	timeDelayMax = BULLET_DELAY;
 }
 
-MainJasonBullet::~MainJasonBullet() {}
+MarioBullet::~MarioBullet() {}
 
-void MainJasonBullet::Update(DWORD dt, vector<LPGAMEENTITY>* colliable_objects)
+void MarioBullet::Update(DWORD dt, vector<LPGAMEENTITY>* colliable_objects)
 {
 	if (isDone == true)
 	{
@@ -70,7 +70,7 @@ void MainJasonBullet::Update(DWORD dt, vector<LPGAMEENTITY>* colliable_objects)
 	}
 }
 
-void MainJasonBullet::Render()
+void MarioBullet::Render()
 {
 	RenderBoundingBox();
 	int ani;
@@ -99,7 +99,7 @@ void MainJasonBullet::Render()
 	}
 }
 
-void MainJasonBullet::GetBoundingBox(float& l, float& t, float& r, float& b)
+void MarioBullet::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;

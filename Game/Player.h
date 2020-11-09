@@ -77,6 +77,12 @@
 #define MARIO_ANI_FIRE_KICK				38
 #define MARIO_ANI_SMALL_IDLE_HOLD		39
 #define MARIO_ANI_SMALL_HOLD			40
+#define MARIO_ANI_BIG_IDLE_HOLD			41
+#define MARIO_ANI_BIG_HOLD				42
+#define MARIO_ANI_RACCOON_IDLE_HOLD		43
+#define MARIO_ANI_RACCOON_HOLD			44
+#define MARIO_ANI_FIRE_IDLE_HOLD		45
+#define MARIO_ANI_FIRE_HOLD				46
 
 
 
@@ -150,6 +156,8 @@ public:
 
 	virtual void Update(DWORD dt, vector<LPGAMEENTITY>* colliable_objects = NULL);
 	virtual void Render();
+
+	//virtual void Collision_items(vector<LPGAMEENTITY>* listitem);
 
 
 	void SetState(int state);

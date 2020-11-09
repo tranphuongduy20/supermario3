@@ -35,13 +35,13 @@ void PlayScene::LoadBaseObjects()
 	}
 	if (bullet1 == NULL)
 	{
-		bullet1 = new MainJasonBullet();
+		bullet1 = new MarioBullet();
 		listBullets.push_back(bullet1);
 		DebugOut(L"[INFO] Bullet1 CREATED! \n");
 	}
 	if (bullet2 == NULL)
 	{
-		bullet2 = new MainJasonBullet();
+		bullet2 = new MarioBullet();
 		listBullets.push_back(bullet2);
 		DebugOut(L"[INFO] Bullet2 CREATED! \n");
 	}
@@ -92,6 +92,7 @@ void PlayScene::Update(DWORD dt)
 	Game* game = Game::GetInstance();
 	float cx, cy;
 	player->GetPosition(cx, cy);
+
 	cx -= SCREEN_WIDTH / 2;
 	cy -= SCREEN_HEIGHT / 2;
 	/*if (player->Getx() + SCREEN_WIDTH / 2  >= mapWidth)
@@ -127,6 +128,9 @@ void PlayScene::Update(DWORD dt)
 		PlayerCollideItem();
 	PlayerGotGate();
 	PlayerTouchItem();
+
+	//player->Collision_items(&listitems);
+
 #pragma region Objects Updates
 	vector<LPGAMEENTITY> coObjects;
 	vector<LPGAMEENTITY> coObjects2;
@@ -346,6 +350,8 @@ void PlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_A:
 		if (player->holdthing)
 		{
+			player->holdthing->nx = -player->nx;
+			player->isKick = true;
 			player->holdthing->SetState(KOOPA_STATE_TROOPA_SPIN);
 		}
 		player->isRun = false;

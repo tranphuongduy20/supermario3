@@ -28,7 +28,7 @@
 //#include "Gunner.h"
 //#include "Domes.h"
 
-#include "MainJasonBullet.h"
+#include "MarioBullet.h"
 //#include "ElectricBullet.h"
 
 
@@ -56,6 +56,7 @@ protected:
 	vector<LPCWSTR> listSceneFilePath;
 	vector<LPGAMEITEM> listItems;
 	vector<LPGAMEENTITY> listLeaf;
+	//vector<LPGAMEENTITY> listitems;
 
 	int idStage;
 	int mapWidth, mapHeight;

@@ -12,6 +12,7 @@ class CBrick : public Entity
 
 public:
 	float oldY;
+	bool isColliCbrick;
 	virtual void SetState(int state);
 	virtual void Update(DWORD dt, vector<LPGAMEENTITY>* coObjects);
 	virtual void Render();

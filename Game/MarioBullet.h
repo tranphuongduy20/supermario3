@@ -17,11 +17,11 @@
 
 
 
-class MainJasonBullet : public Bullet
+class MarioBullet : public Bullet
 {
 public:
-	MainJasonBullet();
-	~MainJasonBullet();
+	MarioBullet();
+	~MarioBullet();
 
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

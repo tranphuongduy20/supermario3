@@ -2,7 +2,12 @@
 
 void CBrick::Render()
 {
-	animationSet->at(0)->Render(nx, x, y);
+	if (isColliCbrick)
+	{
+		animationSet->at(1)->Render(nx, x, y);
+	}
+	else
+		animationSet->at(0)->Render(nx, x, y);
 	RenderBoundingBox();
 }
 
@@ -19,6 +24,7 @@ CBrick::CBrick(float posX, float posY, float frameW, float frameH)
 	x = posX;
 	y = posY;
 	oldY = posY;
+	isColliCbrick = false;
 	tag = EntityType::CBRICK;
 	this->frameH = frameH;
 	this->frameW = frameW;
@@ -30,8 +36,12 @@ void CBrick::SetState(int state)
 	switch (state)
 	{
 	case CBRICK_STATE_COLLISION:
-		y -= 16;
-		vy += 0.05;
+		if (!isColliCbrick)
+		{
+			y -= 16;
+			vy += 0.05;
+			isColliCbrick = true;
+		}
 		break;
 	}
 }
