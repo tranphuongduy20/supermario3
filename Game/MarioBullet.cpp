@@ -2,6 +2,7 @@
 #include "Brick.h"
 #include "CBrick.h"
 #include "Goomba.h"
+#include "Koopa.h"
 
 MarioBullet::MarioBullet()
 {
@@ -117,6 +118,32 @@ void MarioBullet::Update(DWORD dt, vector<LPGAMEENTITY>* colliable_objects)
 						if (goomba->GetState() != GOOMBA_STATE_DIE_FLY)
 						{
 							goomba->SetState(GOOMBA_STATE_DIE_FLY);
+						}
+					}
+				}
+				else if (e->obj->GetType() == EntityType::KOOPA)
+				{
+					Koopa* koopa = dynamic_cast<Koopa*>(e->obj);
+					if (e->nx != 0)
+					{
+						isCollision = 1;
+						vx = 0;
+						vy = 0;
+						vy = -BULLET_DEFLECT_SPEED_Y;
+						if (koopa->GetState() != KOOPA_STATE_DIE_FLY)
+						{
+							koopa->SetState(KOOPA_STATE_DIE_FLY);
+						}
+					}
+					if (e->ny != 0)
+					{
+						isCollision = 1;
+						vx = 0;
+						vy = 0;
+						vy = -BULLET_DEFLECT_SPEED_Y;
+						if (koopa->GetState() != KOOPA_STATE_DIE_FLY)
+						{
+							koopa->SetState(KOOPA_STATE_DIE_FLY);
 						}
 					}
 				}

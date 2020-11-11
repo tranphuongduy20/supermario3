@@ -20,7 +20,7 @@ void Koopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	if (state == KOOPA_STATE_DIE || state == KOOPA_STATE_TROOPA_SPIN)
 		top = y + 10;
 	else
-		top = y;
+		top = y + 10;
 	//else
 	//	bottom = y + KOOPA_BBOX_HEIGHT;
 }
@@ -39,8 +39,12 @@ void Koopa::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 
 	coEvents.clear();
 
+	if (/*state != KOOPA_STATE_DIE &&*/ state != KOOPA_STATE_DIE_FLY)
+	{
+		//Disable Collider
+		CalcPotentialCollisions(coObjects, coEvents);
+	}
 
-	CalcPotentialCollisions(coObjects, coEvents);
 	
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -94,13 +98,35 @@ void Koopa::Render()
 	else if (state == KOOPA_STATE_TROOPA_SPIN) {
 		ani = KOOPA_ANI_TROOPA_SPIN;
 	}
+	else if (state == KOOPA_STATE_DIE_FLY)
+		ani = KOOPA_ANI_DIE_FLY;
+
+	if (state == KOOPA_STATE_WALKING)
+		animationSet->at(ani)->Render(nx, x, y);
+	else if (state == KOOPA_STATE_DIE)
+	{
+		/*if (timerenderanidie == 0)
+			timerenderanidie = GetTickCount64();
+		if (GetTickCount64() - timerenderanidie < 200)*/
+			animationSet->at(ani)->Render(nx, x, y);
+	}
+	else if (state == KOOPA_STATE_DIE_FLY)
+	{
+		animationSet->at(ani)->Render(nx, x, y);
+	}
+
+
+
+
+
+
+
 	if (vx > 0)
 		nx = 1;
 	else nx = -1;
 
 
-	/*else if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
-	else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;*/
+
 
 	animationSet->at(ani)->Render(nx, x, y);
 
@@ -122,6 +148,10 @@ void Koopa::SetState(int state)
 		break;
 	case KOOPA_STATE_TROOPA_SPIN:
 		vx = -nx * 0.1;
+		break;
+	case KOOPA_STATE_DIE_FLY:
+		vx = -KOOPA_WALKING_SPEED + 0.04f;
+		vy = -0.35;
 		break;
 	}
 }

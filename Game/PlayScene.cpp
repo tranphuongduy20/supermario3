@@ -122,7 +122,7 @@ void PlayScene::Update(DWORD dt)
 		cx = tilemap->GetWidthTileMap() - SCREEN_WIDTH;
 	}
 
-	game->SetCamPos(cx, cy);
+	game->SetCamPos((int)cx, (int)cy);
 #pragma endregion
 	if (listItems.size() > 0)
 		PlayerCollideItem();

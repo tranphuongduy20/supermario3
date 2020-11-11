@@ -6,16 +6,18 @@
 #define KOOPA_WALKING_SPEED 0.03f;
 
 #define KOOPA_BBOX_WIDTH		16
-#define KOOPA_BBOX_HEIGHT		26
+#define KOOPA_BBOX_HEIGHT		25
 #define KOOPA_BBOX_HEIGHT_DIE	15
 
 #define KOOPA_STATE_WALKING			100
 #define KOOPA_STATE_DIE				200
 #define KOOPA_STATE_TROOPA_SPIN		300
+#define KOOPA_STATE_DIE_FLY			400
 
 #define KOOPA_ANI_WALKING		0
 #define KOOPA_ANI_DIE			1
 #define KOOPA_ANI_TROOPA_SPIN	2
+#define KOOPA_ANI_DIE_FLY		3
 
 
 class Koopa : public Entity

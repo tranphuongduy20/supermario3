@@ -25,7 +25,7 @@
 #define SCREEN_HEIGHT 270
 #define BOTTOM_SCREEN 450
 
-#define MaxFrameRate 100	//default Frame Rate is the truth
+#define MaxFrameRate 180	//default Frame Rate is the truth
 
 #define SCENEGAME_GAMETIMEMAX		300
 
