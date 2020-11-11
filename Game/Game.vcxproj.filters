@@ -112,6 +112,9 @@
     <ClCompile Include="MarioBullet.cpp">
       <Filter>Header Files\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="RaccoonTail.cpp">
+      <Filter>Header Files\Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h">
@@ -224,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="MarioBullet.h">
       <Filter>Header Files\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="RaccoonTail.h">
+      <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,21 +8,28 @@ Goomba::Goomba()
 
 void Goomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	/*left = x;
+	left = x;
 	top = y;
 	right = x + GOOMBA_BBOX_WIDTH;
 
-	if (state == GOOMBA_STATE_DIE)
+	if (state == GOOMBA_STATE_DIE || state == GOOMBA_STATE_DIE_FLY)
 		bottom = y + GOOMBA_BBOX_HEIGHT_DIE;
 	else
-		bottom = y + GOOMBA_BBOX_HEIGHT;*/
-	if (state != GOOMBA_STATE_DIE /*|| state!=GOOMBA_STATE_DIE_FLY*/)
+		bottom = y + GOOMBA_BBOX_HEIGHT;
+	/*if (state != GOOMBA_STATE_DIE)
 	{
 		left = x;
 		top = y;
 		right = x + GOOMBA_BBOX_WIDTH;
 		bottom = y + GOOMBA_BBOX_HEIGHT;
-	}
+	}*/
+	/*if (state == GOOMBA_STATE_DIE_FLY)
+	{
+		left = x;
+		top = y;
+		right = x + GOOMBA_BBOX_WIDTH;
+		bottom = y + GOOMBA_BBOX_HEIGHT + 60;
+	}*/
 }
 
 void Goomba::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
@@ -43,15 +50,20 @@ void Goomba::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 	if (vx > 0 && x > 290) {
 		x = 290; vx = -vx;
 	}*/
-	vy += 0.002 * dt;
+	//if (state != GOOMBA_STATE_DIE)
+		vy += 0.002 * dt;
+
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
-
-	CalcPotentialCollisions(coObjects, coEvents);
+	if (state != GOOMBA_STATE_DIE && state != GOOMBA_STATE_DIE_FLY)
+	{
+		//Disable Collider
+		CalcPotentialCollisions(coObjects, coEvents);
+	}
 
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -116,9 +128,6 @@ void Goomba::Render()
 	}
 	else if (state == GOOMBA_STATE_DIE_FLY)
 	{
-		if (timerenderanidie == 0)
-			timerenderanidie = GetTickCount64();
-		if (GetTickCount64() - timerenderanidie < 200)
 			animationSet->at(ani)->Render(nx, x, y);
 	}
 
@@ -133,7 +142,7 @@ void Goomba::SetState(int state)
 	switch (state)
 	{
 	case GOOMBA_STATE_DIE:
-		y -= GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE + 1;
+		y += GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE + 1;
 		vx = 0;
 		vy = 0;
 		break;
@@ -142,7 +151,7 @@ void Goomba::SetState(int state)
 		break;
 	case GOOMBA_STATE_DIE_FLY:
 		vx = -GOOMBA_WALKING_SPEED + 0.04f;
-		vy = -0.15;
+		vy = -0.35;
 		break;
 	}
 }

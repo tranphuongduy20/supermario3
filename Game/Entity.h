@@ -68,6 +68,8 @@ public:
 
 	int bbARGB;
 
+	bool isDynamic, isTrigger, isActive;
+
 	DWORD dt;
 	EntityType tag;
 	LPANIMATION_SET animationSet;
@@ -118,6 +120,15 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEENTITY>* coObjects = NULL);
 	virtual void Render() {};
 	virtual void SetState(int state) { this->state = state; }
+
+	/*bool IsActive() { return this->isActive; }
+	void SetActive(bool active) { this->isActive = active; }
+
+	bool IsTrigger() { return this->isTrigger; }
+	void SetTrigger(bool trigger) { this->isTrigger = trigger; }
+
+	virtual void OnOverlapped(GameObject obj) {};
+	bool IsOverlapped(GameObject otherBox);*/
 
 
 

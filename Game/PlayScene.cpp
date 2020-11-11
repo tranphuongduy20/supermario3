@@ -129,7 +129,6 @@ void PlayScene::Update(DWORD dt)
 	PlayerGotGate();
 	PlayerTouchItem();
 
-	//player->Collision_items(&listitems);
 
 #pragma region Objects Updates
 	vector<LPGAMEENTITY> coObjects;

@@ -120,7 +120,9 @@
 class Player : public Entity
 {
 	static Player* instance;
+
 public:
+	vector<LPGAMEENTITY> listitems;
 	int level;
 	int lastnx;
 	int untouchable;
@@ -157,7 +159,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEENTITY>* colliable_objects = NULL);
 	virtual void Render();
 
-	//virtual void Collision_items(vector<LPGAMEENTITY>* listitem);
+	virtual void Collision_items(vector<LPGAMEENTITY>* listitem);
 
 
 	void SetState(int state);

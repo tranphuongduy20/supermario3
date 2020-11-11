@@ -152,6 +152,7 @@
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Gate.h" />
     <ClInclude Include="PowerUp.h" />
+    <ClInclude Include="RaccoonTail.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="MarioBullet.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Gate.cpp" />
     <ClCompile Include="PowerUp.cpp" />
+    <ClCompile Include="RaccoonTail.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="MarioBullet.cpp" />

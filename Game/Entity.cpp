@@ -69,6 +69,18 @@ void Entity::CalcPotentialCollisions(
 {
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
+		/*if (!coObjects->at(i)->IsActive()) {
+			continue;
+		}
+
+		if (IsOverlapped(coObjects->at(i)) && !coObjects->at(i)->IsTrigger()) {
+			OnOverlapped(coObjects->at(i));
+		}*/
+
+		/*if (coObjects->at(i)->GetCollider().IsRectF0() || GetCollider().IsRectF0()) {
+			continue;
+		}*/
+
 		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
 
 		if (e->t > 0 && e->t <= 1.0f)

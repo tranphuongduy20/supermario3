@@ -1,4 +1,7 @@
 ﻿#include "MarioBullet.h"
+#include "Brick.h"
+#include "CBrick.h"
+#include "Goomba.h"
 
 MarioBullet::MarioBullet()
 {
@@ -55,14 +58,68 @@ void MarioBullet::Update(DWORD dt, vector<LPGAMEENTITY>* colliable_objects)
 				x += min_tx * dx + nx * 0.4f;
 				y += min_ty * dy + ny * 0.4f;
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (e->nx != 0)
+				/*if (e->nx != 0)
 				{
 					isCollision = 1;
 					vx = 0;
 					vy = 0;
 				}
 				if (e->ny != 0)
-					vy = -BULLET_DEFLECT_SPEED_Y;
+					vy = -BULLET_DEFLECT_SPEED_Y;*/
+				if (e->obj->GetType() == EntityType::BRICK)
+				{
+					Brick* brick = dynamic_cast<Brick*>(e->obj);
+					/*x += min_tx * dx + nx * 0.4f;
+					y += min_ty * dy + ny * 0.001f;*/
+					if (e->nx != 0)
+					{
+						isCollision = 1;
+						vx = 0;
+						vy = 0;
+					}
+					if (e->ny != 0)
+						vy = -BULLET_DEFLECT_SPEED_Y;
+				}
+				else if (e->obj->GetType() == EntityType::CBRICK)
+				{
+					CBrick* cbrick = dynamic_cast<CBrick*>(e->obj);
+					/*x += min_tx * dx + nx * 0.4f;
+					y += min_ty * dy + ny * 0.001f;*/
+					if (e->nx != 0)
+					{
+						isCollision = 1;
+						vx = 0;
+						vy = 0;
+					}
+					if (e->ny != 0)
+						vy = -BULLET_DEFLECT_SPEED_Y;
+				}
+				else if (e->obj->GetType() == EntityType::GOOMBA)
+				{
+					Goomba* goomba = dynamic_cast<Goomba*>(e->obj);
+					if (e->nx != 0)
+					{
+						isCollision = 1;
+						vx = 0;
+						vy = 0;
+						vy = -BULLET_DEFLECT_SPEED_Y;
+						if (goomba->GetState() != GOOMBA_STATE_DIE_FLY)
+						{
+							goomba->SetState(GOOMBA_STATE_DIE_FLY);
+						}
+					}
+					if (e->ny != 0)
+					{
+						isCollision = 1;
+						vx = 0;
+						vy = 0;
+						vy = -BULLET_DEFLECT_SPEED_Y;
+						if (goomba->GetState() != GOOMBA_STATE_DIE_FLY)
+						{
+							goomba->SetState(GOOMBA_STATE_DIE_FLY);
+						}
+					}
+				}
 			}
 		}
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];

@@ -34,6 +34,7 @@
 40004	215	188	16	16	20
 40005	254	188	16	16	20
 40006	353	286	16	17	20
+40007	235	188	16	16	20
 
 #MUSHROOM
 50001	156	121	16	16	20
@@ -83,6 +84,7 @@
 401	40001	100	40002	100	40003	100	40004	100
 402	40005	100
 403	40006	100
+404	40007	100
 
 # ==== MUSHROOM  =========
 501	50001	100
@@ -114,7 +116,7 @@
 3	201	202	203
 
 # CBRICK
-4	401	402
+4	401	404
 5	402
 6	403
 
@@ -137,7 +139,7 @@
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 
 # KOOPAS
-#3	60	380	3	16	27
+3	60	380	3	16	27
 
 # GOOMBA
 #11	160	390	2	16	16
@@ -266,4 +268,4 @@
 
 [TILEMAP]
 #tile id	file_texture	file_path	num row on tex	num col on tex	num row on tilemap	num col tilemap	tile size
-1000	Resources\TileMap\1.png	Resources\TileMap\1.txt	27	176	27	176	16	16
+1000	Resources\TileMap\1.png	Resources\TileMap\loadmap2.txt	27	176	27	176	16	16

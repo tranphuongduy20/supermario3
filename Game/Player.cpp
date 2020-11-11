@@ -171,7 +171,7 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 					brick->SetState(CBRICK_STATE_COLLISION);
 				}
 			}
-			else if (e->obj->GetType() == EntityType::GOOMBA) // if e->obj is CBrick 
+			else if (e->obj->GetType() == EntityType::GOOMBA)
 			{
 				Goomba* goomba = dynamic_cast<Goomba*>(e->obj);
 				if (e->ny < 0)
@@ -230,18 +230,6 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 				y += min_ty * dy + ny * 0.001f;*/
 				if (nx != 0) vx = 0;
 				if (ny != 0) vy = 0;
-				/*if (e->ny != 0)
-				{
-					if (e->ny == -1)
-					{
-						isJumping = false;
-						if (koopa->GetState() != KOOPA_STATE_DIE)
-						{
-							koopa->SetState(KOOPA_STATE_DIE);
-							vy = -MARIO_JUMP_DEFLECT_SPEED;
-						}
-					}
-				}*/
 				if (e->ny < 0)
 				{
 					if (koopa->GetState() == KOOPA_STATE_WALKING)
@@ -296,31 +284,6 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 					}
 					else if (untouchable == 0)
 					{
-						//if (koopa->GetState() != KOOPA_STATE_DIE)
-						//{
-						//	if (level > MARIO_LEVEL_SMALL)
-						//	{
-						//		level = MARIO_LEVEL_SMALL;
-						//		StartUntouchable();
-						//	}
-						//	else
-						//		SetState(MARIO_STATE_DIE);
-						//}
-						//else
-						//{
-						//	//isKick = true;
-						//	//SetState(MARIO_STATE_KICK);
-						//	e->obj->nx = nx;
-						//	if (!Game::GetInstance()->IsKeyDown(DIK_A))
-						//	{
-						//		holdthing = nullptr;
-						//		e->obj->SetState(KOOPA_STATE_TROOPA_SPIN);
-						//	}
-						//	else
-						//	{
-						//		holdthing = e->obj;
-						//	}
-						//}
 						if (koopa->GetState() != KOOPA_STATE_DIE)
 						{
 							if (level > MARIO_LEVEL_BIG)
@@ -358,33 +321,35 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 						x += dx;
 				}
 			}
-			//else if (e->obj->GetType() == EntityType::MUSH) // if e->obj is CBrick 
-			//{
-			//	Mushroom* mush = dynamic_cast<Mushroom*>(e->obj);
+			else if (e->obj->GetType() == EntityType::MUSH)
+			{
+				Mushroom* mush = dynamic_cast<Mushroom*>(e->obj);
+				listitems.push_back(mush);
+				Collision_items(&listitems);
+				//if (nx != 0) vx = 0;
+				//if (ny != 0) vy = 0;
+				//if (e->ny != 0)
+				//{
+				//	if (e->ny == -1)
+				//	{
+				//		isGround = true;
+				//		isJumping = false;
+				//		//isFly = false;
+				//		//vy = 0;
+				//	}
+				//	/*else
+				//		y += dy;*/
 
-			//	if (nx != 0) vx = 0;
-			//	if (ny != 0) vy = 0;
-			//	if (e->ny != 0)
-			//	{
-			//		if (e->ny == -1)
-			//		{
-			//			isGround = true;
-			//			isJumping = false;
-			//			//isFly = false;
-			//			//vy = 0;
-			//		}
-			//		/*else
-			//			y += dy;*/
+				//}
+				//if (e->ny > 0)
+				//{
+				//	DebugOut(L"yyyyyyyyyyyyyyyyyyy \n");
+				//	mush->SetState(MUSHROOM_STATE_WALKING);
+				//}
 
-			//	}
-			//	if (e->ny > 0)
-			//	{
-			//		DebugOut(L"yyyyyyyyyyyyyyyyyyy \n");
-			//		mush->SetState(MUSHROOM_STATE_WALKING);
-			//	}
-			//}
+			}
 			//if (e->obj->GetType() == EntityType::ENEMY)
-				//SetInjured(1);
+			//	SetInjured(1);
 
 
 
@@ -420,6 +385,7 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 			//	}
 			//} // if Goomba
 		}
+
 	}
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
@@ -444,37 +410,37 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 #pragma endregion
 }
 
-//void Player::Collision_items(vector<LPGAMEENTITY>* coObjects)
-//{
-//	float l, t, r, b, ln, tn, rn, btn;
-//	GetBoundingBox(l, t, r, b);
-//	for (UINT i = 0; i < coObjects->size(); i++)
-//	{
-//		LPGAMEENTITY e = coObjects->at(i);
-//		e->GetBoundingBox(ln, tn, rn, btn);
-//		if (Entity::CheckAABB(l, t, r, b, ln, tn, rn, btn))
-//		{
-//
-//			if (e->GetType() == EntityType::MUSH)
-//			{
-//				e->isdone = true;
-//				y -= 20;
-//				level = MARIO_LEVEL_BIG;
-//			}
-//			else if (e->GetType() == EntityType::LEAF)
-//			{
-//				y -= 5;
-//				e->isdone = true;
-//				level = MARIO_LEVEL_RACCOON;
-//			}
-//			/*else if (e->id_items == FIRE_FLOWER)
-//			{
-//				e->isdone = true;
-//				level = MARIO_FIRE;
-//			}*/
-//		}
-//	}
-//}
+void Player::Collision_items(vector<LPGAMEENTITY>* coObjects)
+{
+	float l, t, r, b, ln, tn, rn, btn;
+	GetBoundingBox(l, t, r, b);
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEENTITY e = coObjects->at(i);
+		e->GetBoundingBox(ln, tn, rn, btn);
+		if (Entity::CheckAABB(l, t, r, b, ln, tn, rn, btn))
+		{
+
+			if (e->GetType() == EntityType::MUSH)
+			{
+				e->isdone = true;
+				y -= 20;
+				level = MARIO_LEVEL_BIG;
+			}
+			else if (e->GetType() == EntityType::LEAF)
+			{
+				y -= 5;
+				e->isdone = true;
+				level = MARIO_LEVEL_RACCOON;
+			}
+			/*else if (e->id_items == FIRE_FLOWER)
+			{
+				e->isdone = true;
+				level = MARIO_FIRE;
+			}*/
+		}
+	}
+}
 
 //void Player::SetInjured(int dame)
 //{
@@ -667,7 +633,7 @@ void Player::Render()
 	}
 	int alpha = 255;
 	if (untouchable) alpha = 128;
-	animationSet->at(ani)->Render(nx, x, y, alpha);
+	animationSet->at(ani)->Render(nx, (int)x, (int)y, alpha);
 	if (animationSet->at(MARIO_ANI_RACCOON_SPIN_SINGLE)->GetCurrentFrame() == 3)
 		isAttack = false;
 

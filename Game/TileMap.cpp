@@ -91,7 +91,7 @@ void TileMap::Draw()
 			float x = tileset_width * (j - firstcol) + Game::GetInstance()->GetCamPosX() - (int)(Game::GetInstance()->GetCamPosX()) % tileset_width;
 			float y = tileset_height * i ;
 
-			tilemap[i][j]->Draw(1, x, y);
+			tilemap[i][j]->Draw(1, (int)x, (int)y);
 		}
 	}
 }

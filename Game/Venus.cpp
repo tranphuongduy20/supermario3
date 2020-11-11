@@ -109,13 +109,13 @@ void Venus::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 	//{
 	//	y = start_y;
 	//}
-	if (moveup && GetTickCount64() - timewaittoshoot > 1000)
+	if (moveup && GetTickCount64() - timewaittoshoot > 3000)
 	{
 		fight = false;
 		DebugOut(L"a");
 		SetState(VENUS_STATE_MOVE_UP);
 	}
-	else if (GetTickCount64() - timewaittoshoot > 2000 && !fight)
+	else if (GetTickCount64() - timewaittoshoot > 4000 && !fight)
 	{
 
 		SetState(VENUS_STATE_SHOOT_45_MORE);
@@ -123,7 +123,7 @@ void Venus::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 		DebugOut(L"b");
 		//timetomovedown=0;
 	}
-	else if (GetTickCount64() - timewaittoshoot > 3000/* && timewaittoshoot != 0*/ && !moveup)
+	else if (GetTickCount64() - timewaittoshoot > 5000 && !moveup)
 	{
 		DebugOut(L"c");
 		SetState(VENUS_STATE_MOVE_DOWN);
