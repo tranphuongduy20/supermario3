@@ -267,7 +267,7 @@ void CAnimation::Render(int direction, float x, float y, int alpha)
 		}
 	}
 
-	frames[currentFrame]->GetSprite()->Draw(direction, (int)x, (int)y, alpha);
+	frames[currentFrame]->GetSprite()->Draw(direction, x, y, alpha);
 }
 
 CAnimations* CAnimations::__instance = NULL;

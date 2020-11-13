@@ -20,6 +20,7 @@
 #include "Leaf.h"
 #include "Coin.h"
 #include "Gate.h"
+#include "RaccoonTail.h"
 //#include "PowerUp.h"
 //#include "GunUp.h"
 
@@ -47,6 +48,7 @@ protected:
 	//HUD* gameHUD;
 	Bullet* bullet1;
 	Bullet* bullet2;
+	RaccoonTail* tail;
 	//Bullet* bullet3;
 	//Bullet* supBullet;
 	//PowerUp* powerUp;

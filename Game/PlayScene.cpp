@@ -45,6 +45,11 @@ void PlayScene::LoadBaseObjects()
 		listBullets.push_back(bullet2);
 		DebugOut(L"[INFO] Bullet2 CREATED! \n");
 	}
+	if (tail == NULL)
+	{
+		tail = new RaccoonTail();
+		DebugOut(L"[INFO] tail CREATED! \n");
+	}
 	/*if (gameHUD == NULL)
 	{
 		gameHUD = new HUD(player->GetHealth(), player->GetgunDam());
@@ -122,7 +127,7 @@ void PlayScene::Update(DWORD dt)
 		cx = tilemap->GetWidthTileMap() - SCREEN_WIDTH;
 	}
 
-	game->SetCamPos((int)cx, (int)cy);
+	game->SetCamPos(cx, cy);
 #pragma endregion
 	if (listItems.size() > 0)
 		PlayerCollideItem();
@@ -150,6 +155,7 @@ void PlayScene::Update(DWORD dt)
 		listLeaf[i]->Update(dt, &coObjects2);
 	for (int i = 0; i < listItems.size(); i++)
 		listItems[i]->Update(dt, &listObjects);
+	tail->Update(dt, &coObjects);
 #pragma endregion
 
 }
@@ -311,6 +317,7 @@ void PlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		player->isAttack = true;
 		if (player->level == MARIO_LEVEL_FIRE)
 		{
+			//player->isBullet = true;
 			for (int i = 0; i < listBullets.size(); i++)
 			{
 				if (listBullets[i]->isDone == true)
@@ -319,6 +326,10 @@ void PlayScenceKeyHandler::OnKeyDown(int KeyCode)
 					break;
 				}
 			}
+		}
+		else if (player->level == MARIO_LEVEL_RACCOON)
+		{
+			playScene->tail->Attack(x - 10, y - 10);
 		}
 		break;
 	}
@@ -330,6 +341,7 @@ void PlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	Player* player = ((PlayScene*)scence)->player;
 	PlayScene* playScene = dynamic_cast<PlayScene*>(scence);
 	vector<LPGAMEENTITY> listObj = ((PlayScene*)scence)->listObjects;
+	float posX, posY;
 	switch (KeyCode)
 	{
 	case DIK_S:
@@ -363,6 +375,7 @@ void PlayScenceKeyHandler::KeyState(BYTE* states)
 	Player* player = ((PlayScene*)scence)->player;
 	Bullet* bullet1 = ((PlayScene*)scence)->bullet1;
 	Bullet* bullet2 = ((PlayScene*)scence)->bullet2;
+
 	//Bullet* bullet3 = ((PlayScene*)scence)->bullet3;
 	//Bullet* supBullet = ((PlayScene*)scence)->supBullet;
 
@@ -911,6 +924,7 @@ void PlayScene::Render()
 	//supBullet->Render();
 	for (int i = 0; i < listBullets.size(); i++)
 		listBullets[i]->Render();
+	tail->Render();
 	//gameHUD->Render(player);
 }
 

@@ -9,6 +9,7 @@
 #include "Goomba.h"
 #include "Koopa.h"
 #include "Mushroom.h"
+#include "Coin.h"
 
 Player::Player(float x, float y) : Entity()
 {
@@ -146,7 +147,7 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 				//	isJumping = false;
 				//}
 			}
-			else if (e->obj->GetType() == EntityType::CBRICK) // if e->obj is CBrick 
+			else if (e->obj->GetType() == EntityType::CBRICK)  
 			{
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				/*x += min_tx * dx + nx * 0.4f;
@@ -321,6 +322,25 @@ void Player::Update(DWORD dt, vector<LPGAMEENTITY>* coObjects)
 						x += dx;
 				}
 			}
+			else if (e->obj->GetType() == EntityType::COIN)
+			{
+				Coin* coin = dynamic_cast<Coin*>(e->obj);
+				if (nx != 0) vx = 0;
+				if (ny != 0) vy = 0;
+				if (e->ny != 0)
+				{
+					if (e->ny == -1)
+					{
+						isGround = true;
+						isJumping = false;
+						//isFly = false;
+						//vy = 0;
+					}
+					/*else
+						y += dy;*/
+
+				}
+			}
 			else if (e->obj->GetType() == EntityType::MUSH)
 			{
 				Mushroom* mush = dynamic_cast<Mushroom*>(e->obj);
@@ -457,6 +477,8 @@ void Player::Collision_items(vector<LPGAMEENTITY>* coObjects)
 void Player::Render()
 {
 	int ani = -1;
+	int alpha = 255;
+	if (untouchable) alpha = 128;
 	if (isDie == true) {
 		ani = MARIO_ANI_SMALL_DIE;
 	}
@@ -590,6 +612,26 @@ void Player::Render()
 					ani = MARIO_ANI_RACCOON_JUMP_UP;
 			}
 		}
+		if (nx > 0)
+		{
+			if (animationSet->at(MARIO_ANI_RACCOON_SPIN_SINGLE)->GetCurrentFrame() == 1 || animationSet->at(MARIO_ANI_RACCOON_SPIN_SINGLE)->GetCurrentFrame() == 2 || animationSet->at(MARIO_ANI_RACCOON_SPIN_SINGLE)->GetCurrentFrame() == 3)
+				animationSet->at(ani)->Render(nx, x, y, alpha);
+			else
+				animationSet->at(ani)->Render(nx, x - 8, y, alpha);
+		}
+		else
+		{
+			if (animationSet->at(MARIO_ANI_RACCOON_SPIN_SINGLE)->GetCurrentFrame() ==2)
+				animationSet->at(ani)->Render(nx, x - 8, y, alpha);
+			else
+				animationSet->at(ani)->Render(nx, x, y, alpha);
+		}
+		RenderBoundingBox();
+		if (animationSet->at(MARIO_ANI_RACCOON_KICK)->GetCurrentFrame() == 2)
+			isKick = false;
+		if (animationSet->at(MARIO_ANI_RACCOON_SPIN_SINGLE)->GetCurrentFrame() == 4)
+			isAttack = false;
+		return;
 	}
 	else if (level == MARIO_LEVEL_FIRE)
 	{
@@ -599,6 +641,9 @@ void Player::Render()
 				ani = MARIO_ANI_FIRE_IDLE_HOLD;
 			else
 				ani = MARIO_ANI_FIRE_HOLD;
+		}
+		else if (isBullet == true) {
+			ani = MARIO_ANI_FIRE_THROW;
 		}
 		else if (isCrouch == true) {
 			ani = MARIO_ANI_FIRE_CROUCH;
@@ -631,17 +676,10 @@ void Player::Render()
 			}
 		}
 	}
-	int alpha = 255;
-	if (untouchable) alpha = 128;
-	animationSet->at(ani)->Render(nx, (int)x, (int)y, alpha);
-	if (animationSet->at(MARIO_ANI_RACCOON_SPIN_SINGLE)->GetCurrentFrame() == 3)
-		isAttack = false;
-
+	animationSet->at(ani)->Render(nx, x, y, alpha);
 	if (animationSet->at(MARIO_ANI_SMALL_KICK)->GetCurrentFrame() == 2)
 		isKick = false;
 	if (animationSet->at(MARIO_ANI_BIG_KICK)->GetCurrentFrame() == 2)
-		isKick = false;
-	if (animationSet->at(MARIO_ANI_RACCOON_KICK)->GetCurrentFrame() == 2)
 		isKick = false;
 	if (animationSet->at(MARIO_ANI_FIRE_KICK)->GetCurrentFrame() == 2)
 		isKick = false;
@@ -744,6 +782,9 @@ void Player::SetState(int state)
 		break;
 	case MARIO_STATE_KICK:
 		isKick = true;
+		break;
+	case MARIO_STATE_BULLET:
+		isBullet = true;
 		break;
 	}
 }

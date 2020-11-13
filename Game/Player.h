@@ -35,6 +35,7 @@
 #define MARIO_STATE_SPIN			1000
 #define MARIO_STATE_FLY				1100
 #define MARIO_STATE_KICK			1200
+#define MARIO_STATE_BULLET			1300
 
 #define MARIO_ANI_BIG_IDLE				0
 #define MARIO_ANI_BIG_WALKING			1
@@ -83,7 +84,8 @@
 #define MARIO_ANI_RACCOON_HOLD			44
 #define MARIO_ANI_FIRE_IDLE_HOLD		45
 #define MARIO_ANI_FIRE_HOLD				46
-
+#define MARIO_ANI_FIRE_THROW			47
+#define MARIO_ANI_FIRE_FLY_BULLET		48
 
 
 
@@ -99,7 +101,7 @@
 #define MARIO_BIG_BBOX_WIDTH		15
 #define MARIO_BIG_BBOX_HEIGHT		27
 
-#define MARIO_RACCOON_BBOX_WIDTH	18
+#define MARIO_RACCOON_BBOX_WIDTH	15
 #define MARIO_RACCOON_BBOX_HEIGHT	27
 
 #define MARIO_FIRE_BBOX_WIDTH		15
@@ -143,6 +145,7 @@ public:
 	bool isAttack;
 	bool isDie;
 	bool isKick;
+	bool isBullet;
 	Entity* holdthing;
 
 	int walkingDirection;
@@ -166,6 +169,7 @@ public:
 	void SetLevel(int l) { level = l; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void GetInfoForBullet(int& direct, float& playerx, float& playery) { direct = nx; playerx = x; playery = y; }
+	void GetInfo(float& playerx, float& playery) { playerx = x; playery = y; }
 	void startWalkingDone() { startWalkingComplete = GetTickCount(); }
 	void SetDirection(int direct) { direction = direct; }
 	void Setvx(float vx) { vx = vx; }
